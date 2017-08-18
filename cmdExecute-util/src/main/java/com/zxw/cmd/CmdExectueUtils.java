@@ -29,7 +29,32 @@ public class CmdExectueUtils {
 	public static final String QUERY_PROCESS_CMD_LINE_PRONAME = "ps -C $PRONAME$  -o  %cpu,%mem,rss,pid";
 	public static final String QUERY_PROCESS_CMD_LINE_PID = "ps -p $PID$  -o  %cpu,%mem,rss,pid";
 	public static final String QUERY_CONNECT_CMD_LINE_PORT = "netstat -antp|awk -F ' ' '{print $4\"-\"$6\"-\"$NF}'|grep ':$PORT$\\b' |grep ESTABLISHED|wc -l";
-
+	
+	/**
+	 * 获取到服务器系统最近一次开关机时间
+	 * @param StateType boot/shutdown/reboot 
+	 * @return
+	 */
+	public static String getOsStateTime(String StateType){
+		String time ="";
+		try {
+			Process process = ExcutCmdScriptUtils.initialization().executeCmd(
+					"last -x -F |grep "+StateType+" | head -1 |awk '{print $5,$6,$7,$8,$9}'");
+			BufferedReader reader = new BufferedReader(new InputStreamReader(
+					process.getInputStream(), "utf-8"));
+			
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				time = line;
+				log.info("获取到服务器系统最近一次"+StateType+"时间："+time);
+			}
+			
+		} catch (Exception e) {
+			log.error("获取文件或者目录占用磁盘大小的命令执行失败！", e);
+		}
+		return time;
+	}
+	
 	/**
 	 * 获取返回结果中的数字
 	 * 
