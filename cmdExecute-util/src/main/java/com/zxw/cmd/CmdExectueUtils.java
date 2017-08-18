@@ -31,7 +31,7 @@ public class CmdExectueUtils {
 	public static final String QUERY_CONNECT_CMD_LINE_PORT = "netstat -antp|awk -F ' ' '{print $4\"-\"$6\"-\"$NF}'|grep ':$PORT$\\b' |grep ESTABLISHED|wc -l";
 	
 	/**
-	 * 获取到服务器系统最近一次开关机时间 
+	 * 获取到服务器系统最近一次开关机时间
 	 * @param StateType boot/shutdown/reboot 
 	 * @return
 	 */
